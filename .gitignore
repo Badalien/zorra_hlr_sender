@@ -1,3 +1,4 @@
 venv
 build
 modules/__pycache__
+main.spec
