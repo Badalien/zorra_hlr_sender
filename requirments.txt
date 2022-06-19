@@ -1,0 +1,7 @@
+requests
+pandas
+openpyxl
+python-magic
+pytz
+libmagic
+python-magic-bin==0.4.14
