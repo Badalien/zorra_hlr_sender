@@ -26,3 +26,8 @@ You also can build executable file for your OS using *pyinstaller* module in vir
 - Install requirments: `pip install -r requirments.txt`
 - Install __*pyinstaller*__ module: `pip install pyinstaller`
 - Run `pyinstaller --onefile main.py` to create executable file (it will be saved to *dist/* Folder) 
+
+
+TO DO (next version):
+- optimize `wait time` timeout for large files;
+- change UI to Windowed (using __tkinter__);
