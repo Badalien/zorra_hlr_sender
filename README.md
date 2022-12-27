@@ -17,6 +17,12 @@ Steps for using app:
 
 <br>
 
+<h3> Logging </h3>
+
+Log files will saved in your User home directory, in subdir `zorra_hlrer`. File format: *zorra_hlr_{date and time}.log*
+
+<br>
+
 ---
 
 You also can build executable file for your OS using *pyinstaller* module in virtual enviroment:
@@ -29,5 +35,14 @@ You also can build executable file for your OS using *pyinstaller* module in vir
 
 
 TO DO (next version):
-- optimize `wait time` timeout for large files;
 - change UI to Windowed (using __tkinter__);
+- add grouping by 10 for HLR request;
+- add columns separator choosing for csv files;
+
+
+<br>
+
+<h4> New Version [27/12/2022] </h4>
+
+- Logging was added
+- Optimyzing wait time for results for large files

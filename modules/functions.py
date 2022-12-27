@@ -2,6 +2,8 @@ from modules import reader as rd
 from modules import zorra_hlr
 import time
 import csv
+import numpy as np
+from modules.logger import logger
 
 
 # read numbers from console
@@ -58,9 +60,11 @@ def get_hlr_stats(zorra: zorra_hlr.ZorraHLR, request_ids_list: list) -> list:  #
     hlr_stats = []
     start_time = time.time()
     ids_count = len(request_ids_list)
-    time_to_wait = ids_count * 10
+    time_to_wait = np.log(ids_count)**3 + 60  # we set time to sleep before requesting results as ln() of requests count
     print(f'You sent {ids_count} requests.\n')
+    logger(f'You sent {ids_count} requests.\n')
     print(f'Start getting HLR stats... (waiting {time_to_wait} seconds)')
+    logger(f'Start getting HLR stats... (waiting {time_to_wait} seconds)')
     while True:  # noqa: E501
         for request_id in request_ids_list:
             hlr_stat = zorra.get_stat_by_id(request_id)
@@ -69,13 +73,14 @@ def get_hlr_stats(zorra: zorra_hlr.ZorraHLR, request_ids_list: list) -> list:  #
                 hlr_stats.append(hlr_stat_row)
                 request_ids_list.remove(request_id)
         print(f'{ids_count - len(request_ids_list)} results ready.')
+        logger(f'{ids_count - len(request_ids_list)} results ready.')
         if len(request_ids_list) == 0:
             break
         if time.time() - start_time > time_to_wait:
             break
-        sleep_time = len(request_ids_list) * 3
-        print(f'Sleeping for {sleep_time} seconds...')
-        time.sleep(sleep_time)
+        iteration_sleep = time_to_wait / ids_count
+        print(f'Sleeping for {iteration_sleep} seconds...')
+        time.sleep(iteration_sleep)
 
     return hlr_stats
 
@@ -90,7 +95,7 @@ def postprocess_hlr_stat(hlr_stat: dict) -> dict:
 
 # write results to csv file
 def list_of_dicts_to_csv(list_of_dicts: list, file_path: str) -> None:
-    with open(file_path, 'w') as csv_file:
+    with open(file_path, 'w', newline='') as csv_file:
         fieldnames = list_of_dicts[0].keys()
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
